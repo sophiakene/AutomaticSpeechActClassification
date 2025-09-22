@@ -10,8 +10,6 @@ This repository contains the code and resources for the classification experimen
 
 ## Table of Contents
 - [Overview](#overview)  
-- [Repository Structure](#repository-structure)  
-- [Installation](#installation)  
 - [Usage](#usage)  
 
 
@@ -25,8 +23,6 @@ This repository implements the classification experiments described in the paper
 - Hyperparameter tuning on different models (Logistic Regression, Random Forest, XGBoost)
 - Using GPT API
 
-## Repository Structure
-# TODO!
 
 ## Usage
 
@@ -37,29 +33,23 @@ git clone https://github.com/sophiakene/SpeechActClassification.git
 cd repo-name
 ```
 
-2. Initialize Python enrivronmentS
+2. Preprocessing
 
 Importantly, note that because of conflicting package versions, two different environments are needed.
 Example using conda:
 
-** First environment for Preprocessing the data and vectorizing it **
+** First environment for Preprocessing the data **
 
 ```
 conda create -n preprocessing_env
 conda activate preprocessing_env
 pip install -r prep_requirements.txt
 ```
-then run preprocessing and vectorization as described under §3
-
-** Second environment for classification experiments **
-
-
-in this environment you can run 
+then run the cells in preprocessing.ipynb
 
 
 
-
-2. Run preprocessing and vectorization scripts
+2. **Vectorizing**
 
 Prerequisites:
 - The SPICE Dataset: The data folder is expected to contain subfolders called SPICE Broadcast discussion, SPICE Broadcast interview, etc. as in the original dataset distribution.
@@ -67,8 +57,9 @@ Prerequisites:
 - Fill in the absolute or relative path to your data folder in the second code cell (directory = "...")
 - Jupyter Notebook or JupyterLab
 
+Importantly, note that due to version incompabilities of libraries, another environment is needed for vectorizing the preprocessed data and running the classification scripts.
 
-** Preprocessing**
+** Second environment for vectorization and classification experiments **
 
 ```
 conda create -n preprocessing_env python=3.13.5
@@ -80,15 +71,7 @@ Output:
   - preprocessed_data.csv: A CSV file containing the preprocessed data and meta data in a tabular format
   - Speech_Acts_Distribution.png: A bar plot with speech act counts
 
-** Vectorizing **
-Importantly, note that due to version incompabilities of libraries, another environment is needed for vectorizing the preprocessed data and running the classification scripts.
-
-```
-conda deactivate
-conda create -n classify_env
-conda activate classify_env
-pip install -r classif_requirements.txt
-```
+3. **Classifying**
 
 Now you can run the cells of vectorize.ipynb <br>
 Input: preprocessed_data.csv (output from preprocessing <br>
@@ -103,11 +86,11 @@ Outputs: <br>
 - hyperparameter_tuning.ipynb
 - xgboost_oversampling.ipynb
 
-# TODO!
 
-Note that for the GPT classification and fine-tuning you need an API key and insert it in the following scripts:
-- 
-- 
+Note that for the GPT classification and fine-tuning you need an API key and insert it in the following script:
+- zero-and-few-shot-clf.ipynb
+
+The notebook gpt_fine_tuning.ipynb prepares the prompts and train, validate and test set for fine-tuning GPT-4o. The actual fine-tuning was carried out on platform.openai.com.
 
 
 
