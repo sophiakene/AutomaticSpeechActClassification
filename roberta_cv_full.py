@@ -64,7 +64,7 @@ def encode_labels(dataset):
     return dataset.map(lambda x: {"label": label2id[x["label"]]})
 
 # %%
-model_name = "distilroberta-base"  # Using the base version of RoBERTa
+model_name = "roberta-base"
 
 tokenizer = RobertaTokenizer.from_pretrained(model_name)
 
@@ -215,24 +215,20 @@ for fold, (train_val_doc_idx, test_doc_idx) in enumerate(skf.split(doc_labels, d
         label2id=label2id
     ).to(device)
     
-    # Training arguments with optimizations for distilled model
+    # Training arguments
     training_args = TrainingArguments(
         output_dir=os.path.join(results_dir, f'fold_{fold}'),
         eval_strategy='epoch',
         save_strategy='epoch',
-        per_device_train_batch_size=16,  # Increased batch size since model is smaller
-        per_device_eval_batch_size=16,
-        gradient_accumulation_steps=2,    # Effective batch size = 16 * 2 = 32
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=8,
         num_train_epochs=10,
-        learning_rate=2e-5,              # Slightly higher learning rate for distilled model
+        learning_rate=1e-5,
         metric_for_best_model='eval_loss',
         greater_is_better=False,
         load_best_model_at_end=True,
         logging_dir=os.path.join(results_dir, 'logs', f'fold_{fold}'),
-        save_total_limit=1,              # Keep only the best model
-        fp16=True,                       # Enable mixed precision training
-        max_grad_norm=1.0,              # Add gradient clipping
-        warmup_ratio=0.1                # Add warmup to stabilize training
+        save_total_limit=1  # Keep only the best model
     )
     
     # Initialize trainer
